@@ -2,7 +2,7 @@
 
 - [x] Track and commit the current dashboard implementation.
 - [x] Remove the Projects tab completely.
-- [ ] Increase text readability and verify responsive layouts.
+- [x] Increase text readability and verify responsive layouts.
 - [ ] Rename the interface to aiusage.
 - [ ] Write the project README.
 - [ ] Push all task commits to the GitHub repository.
@@ -16,3 +16,7 @@ Validation: production build, backend type check, four normalization/token-count
 ## Projects removal
 
 Removed Projects navigation, page rendering, aggregation, and chart/table branches. Session metadata still includes its original working directory. Validation: production build passed.
+
+## Readability and responsiveness
+
+Raised supporting text to 12–14px and headings to 16–34px; increased control heights and muted-text contrast. Cards stack at tablet and phone widths, tables scroll within their containers, and icon navigation has accessible labels. Browser checks passed for all five pages at 360, 390, 768, 1024, and 1440px, with no page overflow or JavaScript errors. Production build passed.

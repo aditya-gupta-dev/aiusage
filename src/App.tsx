@@ -405,6 +405,7 @@ function App() {
             .map((item) => (
               <Button
                 key={item.id}
+                aria-label={item.label}
                 variant="ghost"
                 className={cn("nav-button", page === item.id && "nav-active")}
                 onClick={() => setPage(item.id)}
@@ -421,6 +422,7 @@ function App() {
         <Button
           variant="ghost"
           className={cn("nav-button", page === "sources" && "nav-active")}
+          aria-label="Data sources"
           onClick={() => setPage("sources")}
         >
           <Database data-icon="inline-start" />
