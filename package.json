@@ -1,0 +1,42 @@
+{
+  "name": "aiusage",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun scripts/dev.ts",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "dev:frontend": "vite",
+    "dev:backend": "bun --watch server/index.ts",
+    "test": "bun test server",
+    "check:server": "tsc --ignoreConfig --noEmit --module esnext --moduleResolution bundler --target es2023 --types bun --resolveJsonModule --allowSyntheticDefaultImports --skipLibCheck server/index.ts server/parsers.ts server/collector.ts scripts/dev.ts"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "ccusage": "^20.0.26",
+    "class-variance-authority": "^0.7.1",
+    "cn": "^0.4.0",
+    "lucide-react": "^1.50.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "recharts": "3.8.0",
+    "shadcn": "^4.21.1",
+    "tw-animate-css": "^1.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/bun": "^1.4.2",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  },
+  "packageManager": "bun@1.4.0"
+}
