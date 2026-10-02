@@ -11,7 +11,6 @@ import {
   ChevronRight,
   Cpu,
   Database,
-  Folder,
   LayoutDashboard,
   Moon,
   RefreshCw,
@@ -111,7 +110,6 @@ const nav = [
   { id: "agents", label: "Agents", icon: Bot },
   { id: "models", label: "Models", icon: Cpu },
   { id: "sessions", label: "Sessions", icon: Terminal },
-  { id: "projects", label: "Projects", icon: Folder },
   { id: "sources", label: "Data sources", icon: Database },
 ];
 function Filter({
@@ -310,10 +308,6 @@ function App() {
       ),
     [filteredSessions],
   );
-  const projectRows = useMemo(
-    () => groups(filteredSessions, "project"),
-    [filteredSessions],
-  );
   const sessions = sessionRows.length;
   const detected = data?.sources.filter((s) => s.installed).length ?? 0;
   const connected =
@@ -356,13 +350,7 @@ function App() {
     URL.revokeObjectURL(url);
   }
   const tableRows = (
-    page === "models"
-      ? modelRows
-      : page === "agents"
-        ? agentRows
-        : page === "projects"
-          ? projectRows
-          : sessionRows
+    page === "models" ? modelRows : page === "agents" ? agentRows : sessionRows
   ).filter((r) =>
     (r.key + " " + r.events[0].model + " " + r.events[0].project)
       .toLowerCase()
@@ -412,20 +400,22 @@ function App() {
         </div>
         <div className="nav-label">WORKSPACE</div>
         <nav>
-          {nav.slice(0, 5).map((item) => (
-            <Button
-              key={item.id}
-              variant="ghost"
-              className={cn("nav-button", page === item.id && "nav-active")}
-              onClick={() => setPage(item.id)}
-            >
-              <item.icon data-icon="inline-start" />
-              {item.label}
-              {item.id === "agents" && (
-                <span className="nav-count">{detected}</span>
-              )}
-            </Button>
-          ))}
+          {nav
+            .filter((item) => item.id !== "sources")
+            .map((item) => (
+              <Button
+                key={item.id}
+                variant="ghost"
+                className={cn("nav-button", page === item.id && "nav-active")}
+                onClick={() => setPage(item.id)}
+              >
+                <item.icon data-icon="inline-start" />
+                {item.label}
+                {item.id === "agents" && (
+                  <span className="nav-count">{detected}</span>
+                )}
+              </Button>
+            ))}
         </nav>
         <div className="nav-label nav-label-second">SYSTEM</div>
         <Button
@@ -1072,7 +1062,7 @@ function App() {
                   </Panel>
                 </>
               )}
-              {["agents", "models", "sessions", "projects"].includes(page) && (
+              {["agents", "models", "sessions"].includes(page) && (
                 <>
                   <div className="chart-grid">
                     {page === "agents" ? (
@@ -1116,9 +1106,7 @@ function App() {
                         title={
                           page === "models"
                             ? "Model consumption"
-                            : page === "projects"
-                              ? "Project consumption"
-                              : "Session activity"
+                            : "Session activity"
                         }
                         description="Token consumption across the selected period"
                       >
@@ -1130,14 +1118,7 @@ function App() {
                             accessibilityLayer
                             data={(page === "models"
                               ? modelRows.slice(0, 8)
-                              : page === "projects"
-                                ? projectRows
-                                    .slice(0, 8)
-                                    .map((r) => ({
-                                      ...r,
-                                      name: r.name.split("/").pop() ?? r.name,
-                                    }))
-                                : series
+                              : series
                             ).map((r) => ({
                               name:
                                 "name" in r ? String(r.name) : String(r.date),
@@ -1177,12 +1158,7 @@ function App() {
                       >
                         <BarChart
                           accessibilityLayer
-                          data={(page === "agents"
-                            ? agentRows
-                            : page === "projects"
-                              ? projectRows
-                              : modelRows
-                          )
+                          data={(page === "agents" ? agentRows : modelRows)
                             .slice(0, 8)
                             .map((r) => ({
                               ...r,
@@ -1274,9 +1250,7 @@ function App() {
                               ? "Session"
                               : page === "models"
                                 ? "Model"
-                                : page === "projects"
-                                  ? "Project"
-                                  : "Agent"}
+                                : "Agent"}
                           </TableHead>
                           {page === "sessions" && (
                             <TableHead>Model / Agent</TableHead>
