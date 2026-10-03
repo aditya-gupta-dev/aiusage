@@ -34,6 +34,7 @@ import {
   YAxis,
 } from "recharts";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -1309,9 +1310,38 @@ function App() {
                               <TableCell>
                                 {money(r.cost)}
                                 {r.unknown > 0 && (
-                                  <span className="muted-note block">
-                                    {r.unknown} unpriced
-                                  </span>
+                                  <Dialog>
+                                    <DialogTrigger className="muted-note block hover:underline text-left cursor-pointer outline-none">
+                                      {r.unknown} unpriced
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+                                      <DialogHeader>
+                                        <DialogTitle>Unpriced events</DialogTitle>
+                                        <DialogDescription>
+                                          Details for {r.unknown} events that could not be priced.
+                                        </DialogDescription>
+                                      </DialogHeader>
+                                      <div className="overflow-y-auto flex-1 text-sm space-y-4 pr-2">
+                                        {r.events.filter((e) => e.cost === null).map((e, i) => (
+                                          <div key={i} className="rounded-lg border p-3 flex flex-col gap-1 text-left">
+                                            <div className="font-medium text-foreground">
+                                              {agents[e.agent] ?? e.agent} · {e.model}
+                                            </div>
+                                            <div className="text-muted-foreground break-all">
+                                              <strong>Project:</strong> {e.project || "Unknown"}
+                                            </div>
+                                            <div className="text-destructive">
+                                              <strong>Reason:</strong> {e.unpricedReason || "Cost could not be calculated."}
+                                            </div>
+                                            <div className="text-muted-foreground text-xs mt-1">
+                                              Tokens: {compact(e.input)} in, {compact(e.output)} out, {compact(e.cacheRead)} cache
+                                              · {new Date(e.timestamp).toLocaleString()}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </DialogContent>
+                                  </Dialog>
                                 )}
                               </TableCell>
                               <TableCell>

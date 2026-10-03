@@ -9,7 +9,7 @@ export function price(
   output: number,
   read: number,
   write: number,
-): number | null {
+): { cost: number | null; reason?: string } {
   const map = pricing as Record<
     string,
     {
@@ -23,21 +23,14 @@ export function price(
   >;
   const key = model.replace(/^(anthropic|openai|google)\//, "");
   const p = map[key]?.cost ?? map[key.replace(/-\d{8}$/, "")]?.cost;
-  if (
-    !p ||
-    p.input === undefined ||
-    p.output === undefined ||
-    (read > 0 && p.cache_read === undefined) ||
-    (write > 0 && p.cache_write === undefined)
-  )
-    return null;
-  return (
-    (input * p.input +
-      output * p.output +
-      read * (p.cache_read ?? 0) +
-      write * (p.cache_write ?? 0)) /
-    1e6
-  );
+  if (!p) return { cost: null, reason: `Model '${model}' not found in pricing.json` };
+  if (p.input === undefined) return { cost: null, reason: `Model '${model}' missing input price` };
+  if (p.output === undefined) return { cost: null, reason: `Model '${model}' missing output price` };
+  if (read > 0 && p.cache_read === undefined) return { cost: null, reason: `Model '${model}' missing cache_read price` };
+  if (write > 0 && p.cache_write === undefined) return { cost: null, reason: `Model '${model}' missing cache_write price` };
+  return {
+    cost: (input * p.input + output * p.output + read * (p.cache_read ?? 0) + write * (p.cache_write ?? 0)) / 1e6
+  };
 }
 export function parseRecords(
   agent: AgentId,
@@ -106,7 +99,7 @@ export function parseRecords(
     const recorded = r.costUSD ?? r.cost;
     const estimated = price(eventModel, input, output, cacheRead, cacheWrite);
     const cost =
-      typeof recorded === "number" && recorded >= 0 ? recorded : estimated;
+      typeof recorded === "number" && recorded >= 0 ? recorded : estimated.cost;
     events.push({
       id,
       agent,
@@ -127,6 +120,7 @@ export function parseRecords(
           : cost === null
             ? "unknown"
             : "estimated",
+      unpricedReason: cost === null ? estimated.reason : undefined,
     });
   }
   for (const r of rows) {

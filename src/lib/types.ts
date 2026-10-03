@@ -14,6 +14,7 @@ export interface UsageEvent {
   total: number;
   cost: number | null;
   costSource: "recorded" | "estimated" | "unknown";
+  unpricedReason?: string;
 }
 export interface Source {
   id: string;

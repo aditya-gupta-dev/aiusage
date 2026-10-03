@@ -117,6 +117,7 @@ export function normalize(
           total: input + output + cacheRead + cacheWrite,
           cost: m.missingPricing ? null : (m.cost ?? null),
           costSource: m.missingPricing ? "unknown" : "estimated",
+          unpricedReason: m.missingPricing ? `Model '${m.modelName}' missing pricing in engine` : undefined,
         });
       }
   return events.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
