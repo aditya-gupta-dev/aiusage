@@ -56,6 +56,8 @@ export async function report(
     "--by-agent",
     "--timezone",
     Intl.DateTimeFormat().resolvedOptions().timeZone,
+    "--config",
+    resolve(".ccusage.json")
   ];
   if (since) args.push("--since", since);
   if (until) args.push("--until", until);

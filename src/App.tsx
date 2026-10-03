@@ -1314,30 +1314,38 @@ function App() {
                                     <DialogTrigger className="muted-note block hover:underline text-left cursor-pointer outline-none">
                                       {r.unknown} unpriced
                                     </DialogTrigger>
-                                    <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
-                                      <DialogHeader>
+                                    <DialogContent className="sm:max-w-2xl max-h-[85vh] flex flex-col p-0 overflow-hidden gap-0">
+                                      <DialogHeader className="px-5 pt-5 pb-4 border-b">
                                         <DialogTitle>Unpriced events</DialogTitle>
                                         <DialogDescription>
                                           Details for {r.unknown} events that could not be priced.
                                         </DialogDescription>
                                       </DialogHeader>
-                                      <div className="overflow-y-auto flex-1 text-sm space-y-4 pr-2">
+                                      <div className="overflow-y-auto flex-1 p-5 space-y-4 bg-muted/20">
                                         {r.events.filter((e) => e.cost === null).map((e, i) => (
-                                          <div key={i} className="rounded-lg border p-3 flex flex-col gap-1 text-left">
-                                            <div className="font-medium text-foreground">
-                                              {agents[e.agent] ?? e.agent} · {e.model}
-                                            </div>
-                                            <div className="text-muted-foreground break-all">
-                                              <strong>Project:</strong> {e.project || "Unknown"}
-                                            </div>
-                                            <div className="text-destructive">
-                                              <strong>Reason:</strong> {e.unpricedReason || "Cost could not be calculated."}
-                                            </div>
-                                            <div className="text-muted-foreground text-xs mt-1">
-                                              Tokens: {compact(e.input)} in, {compact(e.output)} out, {compact(e.cacheRead)} cache
-                                              · {new Date(e.timestamp).toLocaleString()}
-                                            </div>
-                                          </div>
+                                          <Card key={i} className="text-left shadow-sm">
+                                            <CardHeader className="pb-3 border-b border-border/50 bg-muted/10">
+                                              <CardTitle className="flex justify-between items-center text-sm font-medium">
+                                                <span>{agents[e.agent] ?? e.agent} <span className="text-muted-foreground font-normal mx-1">·</span> {e.model}</span>
+                                                <span className="text-xs text-muted-foreground font-normal">{new Date(e.timestamp).toLocaleString()}</span>
+                                              </CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="pt-4 space-y-3">
+                                              <div className="text-muted-foreground break-all text-sm flex gap-2">
+                                                <strong className="text-foreground font-medium whitespace-nowrap">Project:</strong> 
+                                                <span>{e.project || "Unknown"}</span>
+                                              </div>
+                                              <div className="text-sm flex gap-2">
+                                                <strong className="text-foreground font-medium whitespace-nowrap">Reason:</strong> 
+                                                <span className="text-destructive font-medium">{e.unpricedReason || "Cost could not be calculated."}</span>
+                                              </div>
+                                              <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-2 pt-2 border-t border-border/50">
+                                                <span className="flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> {compact(e.input)} input</span>
+                                                <span className="flex items-center gap-1.5"><Terminal className="w-3.5 h-3.5" /> {compact(e.output)} output</span>
+                                                <span className="flex items-center gap-1.5"><Database className="w-3.5 h-3.5" /> {compact(e.cacheRead)} cached</span>
+                                              </div>
+                                            </CardContent>
+                                          </Card>
                                         ))}
                                       </div>
                                     </DialogContent>
