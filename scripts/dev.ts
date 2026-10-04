@@ -2,7 +2,7 @@ const backend = Bun.spawn(["bun", "--watch", "server/index.ts"], {
   stdout: "inherit",
   stderr: "inherit",
 });
-const frontend = Bun.spawn(["bun", "x", "vite", "--host", "127.0.0.1"], {
+const frontend = Bun.spawn(["bun", "x", "vite", "--host", "0.0.0.0"], {
   stdout: "inherit",
   stderr: "inherit",
 });

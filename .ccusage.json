@@ -1,0 +1,30 @@
+{
+  "defaults": {
+    "pricingOverrides": {
+      "gpt-6-astra": {
+        "inputCostPerToken": 0.00001,
+        "outputCostPerToken": 0.00005,
+        "cacheReadInputTokenCost": 0.000001,
+        "cacheCreationInputTokenCost": 0.0000125
+      },
+      "gpt-6.1-sol": {
+        "inputCostPerToken": 0.000002,
+        "outputCostPerToken": 0.00001,
+        "cacheReadInputTokenCost": 0.0000001,
+        "cacheCreationInputTokenCost": 0.0000025
+      },
+      "gpt-6-luna": {
+        "inputCostPerToken": 0.0000001,
+        "outputCostPerToken": 0.0000005,
+        "cacheReadInputTokenCost": 0.00000001,
+        "cacheCreationInputTokenCost": 0.000000125
+      },
+      "big-pickle": {
+        "inputCostPerToken": 0,
+        "outputCostPerToken": 0,
+        "cacheReadInputTokenCost": 0,
+        "cacheCreationInputTokenCost": 0
+      }
+    }
+  }
+}
