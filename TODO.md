@@ -4,7 +4,7 @@
 - [x] Remove the Projects tab completely.
 - [x] Increase text readability and verify responsive layouts.
 - [x] Rename the interface to aiusage.
-- [ ] Write the project README.
+- [x] Write the project README.
 - [ ] Push all task commits to the GitHub repository.
 
 ## Dashboard implementation
@@ -24,3 +24,7 @@ Raised supporting text to 12–14px and headings to 16–34px; increased control
 ## aiusage naming
 
 Updated the sidebar wordmark, page metadata, and favicon to aiusage. The package name and browser title already use aiusage. Validation: production build passed.
+
+## README
+
+Replaced the Vite template with aiusage setup instructions, single-command launch, dashboard features, supported agents, data and pricing semantics, custom log locations, development commands, LAN behavior, and troubleshooting. Preserved the existing LAN settings and included the pricing configuration required by the engine in a separate commit.
