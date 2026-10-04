@@ -385,7 +385,7 @@ function App() {
             <Boxes />
           </span>
           <span>
-            token<span className="brand-light">scope</span>
+            ai<span className="brand-light">usage</span>
             <small>YOUR AI, ACCOUNTED FOR.</small>
           </span>
         </a>
