@@ -5,7 +5,7 @@
 - [x] Increase text readability and verify responsive layouts.
 - [x] Rename the interface to aiusage.
 - [x] Write the project README.
-- [ ] Push all task commits to the GitHub repository.
+- [x] Push all task commits to the GitHub repository.
 
 ## Dashboard implementation
 
@@ -28,3 +28,7 @@ Updated the sidebar wordmark, page metadata, and favicon to aiusage. The package
 ## README
 
 Replaced the Vite template with aiusage setup instructions, single-command launch, dashboard features, supported agents, data and pricing semantics, custom log locations, development commands, LAN behavior, and troubleshooting. Preserved the existing LAN settings and included the pricing configuration required by the engine in a separate commit.
+
+## Repository push
+
+Pushed the completed task commits to `main` at https://github.com/aditya-gupta-dev/aiusage. Final checks: production build, backend type check, four tests, and a real local scan passed. Oxlint completed with existing React warnings and no errors.
