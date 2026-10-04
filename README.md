@@ -22,6 +22,30 @@ If you already have the project, run `bun install` and `bun run dev` from its di
 
 Keep the terminal open. Press **Ctrl+C** to stop. The frontend listens on all network interfaces, so you can also open the printed Network URL from another device on your LAN. The API remains bound to loopback and is accessed through Vite's proxy. LAN access exposes the dashboard's usage metadata to devices that can reach the frontend.
 
+## Production build and start
+
+Build the frontend and Bun server together:
+
+```bash
+bun run build
+```
+
+Start both from the compiled output in one process:
+
+```bash
+bun run start
+```
+
+Open **http://localhost:3847**. The Bun server serves the built dashboard and API from the same port; Vite is not needed at runtime. It listens on all network interfaces, like the development frontend. Set `HOST=127.0.0.1` to limit access to this machine, or `API_PORT=4000` to change the production port.
+
+To build and immediately run with a single command:
+
+```bash
+bun run build:start
+```
+
+Run these commands from the project directory. Keep `node_modules` and `.ccusage.json` available alongside `dist/`: the compiled server still invokes the installed ccusage CLI and its native adapter. The build bundles the application backend; it is not a standalone executable.
+
 ## Dashboard
 
 - **Overview:** token and cost totals, cache hit rate, daily usage, token distribution, agent comparisons, top models, and activity charts.
@@ -66,7 +90,7 @@ CODEX_HOME=/path/to/codex bun run dev
 
 The direct collectors accept comma-separated paths for the agent-specific variables above. Other ccusage adapters honor their own environment variables; consult ccusage's documentation for those formats.
 
-The backend also reads `API_PORT`, but Vite's `/api` proxy targets port **3847**. If you change that port, update the proxy in `vite.config.ts` to match.
+The backend also reads `API_PORT`, but Vite's `/api` proxy targets port **3847**. For development, update the proxy in `vite.config.ts` if you change that port. Production serves the frontend and API on the same port and needs no proxy.
 
 ## Development
 
@@ -77,7 +101,11 @@ Built with React 19, TypeScript, Vite, Tailwind CSS 4, shadcn components using *
 | `bun run dev` | Start frontend and backend together with hot reload. |
 | `bun run dev:frontend` | Start only Vite; requires a running backend for usage data. |
 | `bun run dev:backend` | Start only the Bun API in watch mode. |
-| `bun run build` | Type-check and build the frontend into `dist/`. |
+| `bun run build` | Type-check and build both frontend and server into `dist/`. |
+| `bun run start` | Serve the compiled dashboard and API together on port 3847. |
+| `bun run build:start` | Build both services, then start production. |
+| `bun run build:frontend` | Build only the frontend; Vite recreates `dist/`. |
+| `bun run build:server` | Type-check and bundle the backend as `dist/server.js`. |
 | `bun run check:server` | Type-check the backend and launch script. |
 | `bun test` | Run backend normalization and token-counter tests. |
 | `bun run lint` | Run Oxlint. |

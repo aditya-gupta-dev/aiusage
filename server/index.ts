@@ -1,5 +1,8 @@
 import { collect } from "./collector";
 import { normalize, report } from "./engine";
+import { serveFrontend } from "./static";
+// Bun's bundler can inline process.env.NODE_ENV; read the runtime environment.
+const production = Bun.env.NODE_ENV === "production";
 const sessionCache = new Map<
   string,
   { at: number; events: ReturnType<typeof normalize> }
@@ -17,7 +20,7 @@ async function scan(force = false) {
 }
 const port = Number(process.env.API_PORT || 3847);
 Bun.serve({
-  hostname: "127.0.0.1",
+  hostname: process.env.HOST || (production ? "0.0.0.0" : "127.0.0.1"),
   port,
   idleTimeout: 120,
   async fetch(req) {
@@ -48,12 +51,16 @@ Bun.serve({
         const origin = req.headers.get("origin");
         if (
           origin &&
+          origin !== url.origin &&
           !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
         )
           return new Response("Forbidden", { status: 403 });
         sessionCache.clear();
         return Response.json(await scan(true));
       }
+      if (url.pathname === "/api" || url.pathname.startsWith("/api/"))
+        return new Response("Not found", { status: 404 });
+      if (production) return serveFrontend(req, import.meta.dir);
       return new Response("Not found", { status: 404 });
     } catch {
       return Response.json(
@@ -63,4 +70,4 @@ Bun.serve({
     }
   },
 });
-console.log(`Usage API running at http://127.0.0.1:${port}`);
+console.log(`${production ? "aiusage dashboard and API" : "Usage API"} running at http://localhost:${port}`);

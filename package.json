@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "bun scripts/dev.ts",
-    "build": "tsc -b && vite build",
+    "build": "bun run build:frontend && bun run build:server",
     "lint": "oxlint",
     "preview": "vite preview",
     "dev:frontend": "vite",
     "dev:backend": "bun --watch server/index.ts",
     "test": "bun test server",
-    "check:server": "tsc --ignoreConfig --noEmit --module esnext --moduleResolution bundler --target es2023 --types bun --resolveJsonModule --allowSyntheticDefaultImports --skipLibCheck server/index.ts server/parsers.ts server/collector.ts scripts/dev.ts"
+    "check:server": "tsc --ignoreConfig --noEmit --module esnext --moduleResolution bundler --target es2023 --types bun --resolveJsonModule --allowSyntheticDefaultImports --skipLibCheck server/index.ts server/parsers.ts server/collector.ts scripts/dev.ts",
+    "build:frontend": "tsc -b && vite build",
+    "build:server": "bun run check:server && bun build server/index.ts --target bun --outfile dist/server.js",
+    "start": "NODE_ENV=production bun dist/server.js",
+    "build:start": "bun run build && bun run start"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

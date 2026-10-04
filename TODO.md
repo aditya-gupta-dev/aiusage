@@ -32,3 +32,11 @@ Replaced the Vite template with aiusage setup instructions, single-command launc
 ## Repository push
 
 Pushed the completed task commits to `main` at https://github.com/aditya-gupta-dev/aiusage. Final checks: production build, backend type check, four tests, and a real local scan passed. Oxlint completed with existing React warnings and no errors.
+
+## Production build and launch
+
+- [x] Add a combined frontend/server build and single-process production start.
+
+`bun run build` builds both services; `bun run start` serves the dashboard and API together. `bun run build:start` performs both steps with one command. Added static asset handling, SPA fallback, and serving tests; documented runtime dependencies and production host/port settings.
+
+Validation: combined production build, backend type check, five tests, and compiled-server smoke checks passed, including dashboard HTML, assets, SPA routes, missing/private-file 404s, API health, and real usage collection.
