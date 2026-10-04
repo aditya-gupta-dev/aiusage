@@ -44,7 +44,24 @@ To build and immediately run with a single command:
 bun run build:start
 ```
 
-Run these commands from the project directory. Keep `node_modules` and `.ccusage.json` available alongside `dist/`: the compiled server still invokes the installed ccusage CLI and its native adapter. The build bundles the application backend; it is not a standalone executable.
+The build copies ccusage's native executable, pricing overrides, and license into `dist/runtime/`. **Only `dist/` and an installed Bun runtime are needed to run the built app**; source files, root configuration, and `node_modules` are not required.
+
+You can copy `dist/` anywhere and run it directly:
+
+```bash
+bun /path/to/dist/server.js
+```
+
+Or use the generated package script inside `dist`:
+
+```bash
+cd /path/to/dist
+bun run start
+```
+
+The bundled ccusage binary targets the operating system and CPU architecture of the build machine (for example, Linux x64). Use a machine with the same platform/architecture, or rebuild on the target platform. Keep your agents' logs available on the runtime machine; they remain the dashboard's data source.
+
+The packaged pricing overrides are in `dist/runtime/.ccusage.json`. Edit that copy to change runtime rates, or edit the root `.ccusage.json` and rebuild. The native executable must retain its executable permission on Unix systems.
 
 ## Dashboard
 
@@ -105,7 +122,7 @@ Built with React 19, TypeScript, Vite, Tailwind CSS 4, shadcn components using *
 | `bun run start` | Serve the compiled dashboard and API together on port 3847. |
 | `bun run build:start` | Build both services, then start production. |
 | `bun run build:frontend` | Build only the frontend; Vite recreates `dist/`. |
-| `bun run build:server` | Type-check and bundle the backend as `dist/server.js`. |
+| `bun run build:server` | Type-check and bundle the backend; package ccusage and its configuration in `dist/`. |
 | `bun run check:server` | Type-check the backend and launch script. |
 | `bun test` | Run backend normalization and token-counter tests. |
 | `bun run lint` | Run Oxlint. |

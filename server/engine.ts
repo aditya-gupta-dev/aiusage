@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import type { UsageEvent } from "../src/lib/types";
+import { production } from "./runtime";
 export const agentNames: Record<string, string> = {
   claude: "Claude Code",
   codex: "Codex",
@@ -48,8 +49,9 @@ export async function report(
   until?: string,
 ): Promise<ReportRow[]> {
   const args = [
-    process.execPath,
-    resolve("node_modules/ccusage/src/cli.js"),
+    ...(production
+      ? [resolve(import.meta.dir, "runtime", process.platform === "win32" ? "ccusage.exe" : "ccusage")]
+      : [process.execPath, resolve("node_modules/ccusage/src/cli.js")]),
     kind,
     "--json",
     "--offline",
@@ -57,7 +59,7 @@ export async function report(
     "--timezone",
     Intl.DateTimeFormat().resolvedOptions().timeZone,
     "--config",
-    resolve(".ccusage.json")
+    production ? resolve(import.meta.dir, "runtime", ".ccusage.json") : resolve(".ccusage.json")
   ];
   if (since) args.push("--since", since);
   if (until) args.push("--until", until);

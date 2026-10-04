@@ -40,3 +40,13 @@ Pushed the completed task commits to `main` at https://github.com/aditya-gupta-d
 `bun run build` builds both services; `bun run start` serves the dashboard and API together. `bun run build:start` performs both steps with one command. Added static asset handling, SPA fallback, and serving tests; documented runtime dependencies and production host/port settings.
 
 Validation: combined production build, backend type check, five tests, and compiled-server smoke checks passed, including dashboard HTML, assets, SPA routes, missing/private-file 404s, API health, and real usage collection.
+
+## Portable dist runtime
+
+- [x] Package ccusage’s native executable, pricing configuration, and license during the server build.
+- [x] Run compiled reports directly against the packaged binary using paths relative to dist.
+- [x] Generate a start script in dist and keep packaged runtime files inaccessible over HTTP.
+
+The built dashboard now runs with only `dist/`, Bun, and access to agent logs on a matching OS/CPU platform.
+
+Validation: combined build, backend type check, and five tests passed. Copied only dist into an isolated temporary directory and verified dashboard serving, real daily/session reports, arbitrary working-directory startup, and private runtime-file 404s without node_modules or root configuration.

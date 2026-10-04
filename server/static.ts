@@ -13,7 +13,9 @@ export async function serveFrontend(req: Request, root: string): Promise<Respons
   }
   const directory = resolve(root);
   // The server bundle shares dist with public files but is not a browser asset.
-  if (pathname === "/server.js" || pathname.startsWith("/server.js/"))
+  if (pathname === "/server.js" || pathname.startsWith("/server.js/") ||
+      pathname === "/runtime" || pathname.startsWith("/runtime/") ||
+      pathname === "/package.json" || pathname.split("/").some(part => part.startsWith(".")))
     return new Response("Not found", { status: 404 });
   const path = resolve(directory, `.${pathname}`);
   if (path !== directory && !path.startsWith(directory + sep))

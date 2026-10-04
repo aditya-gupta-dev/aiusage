@@ -1,8 +1,7 @@
 import { collect } from "./collector";
 import { normalize, report } from "./engine";
 import { serveFrontend } from "./static";
-// Bun's bundler can inline process.env.NODE_ENV; read the runtime environment.
-const production = Bun.env.NODE_ENV === "production";
+import { production } from "./runtime";
 const sessionCache = new Map<
   string,
   { at: number; events: ReturnType<typeof normalize> }

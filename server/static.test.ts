@@ -19,6 +19,9 @@ test("production serving distinguishes SPA routes, assets, and private paths", a
     expect(asset.headers.get("Cache-Control")).toContain("immutable");
     expect((await request("/assets/missing.js")).status).toBe(404);
     expect((await request("/server.js")).status).toBe(404);
+    expect((await request("/runtime/ccusage")).status).toBe(404);
+    expect((await request("/runtime/.ccusage.json")).status).toBe(404);
+    expect((await request("/package.json")).status).toBe(404);
     expect((await request("/%2e%2e%2fpackage.json")).status).toBe(404);
     expect((await request("/%invalid")).status).toBe(400);
     expect((await request("/", "POST")).status).toBe(405);
